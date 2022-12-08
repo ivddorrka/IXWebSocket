@@ -13,6 +13,7 @@
 #include "IXWebSocketHandshake.h"
 #include <cassert>
 #include <cmath>
+#include "proxysocket.h"
 
 
 namespace
@@ -50,6 +51,7 @@ namespace ix
                                                       WebSocketOpenInfo(),
                                                       WebSocketCloseInfo(code, reason, remote)));
             });
+        proxysocket_initialize();
     }
 
     WebSocket::~WebSocket()
@@ -63,6 +65,7 @@ namespace ix
         std::lock_guard<std::mutex> lock(_configMutex);
         _url = url;
     }
+
 
     void WebSocket::setHandshakeTimeout(int handshakeTimeoutSecs)
     {
@@ -123,6 +126,7 @@ namespace ix
         std::lock_guard<std::mutex> lock(_configMutex);
         _enablePong = false;
     }
+
 
     void WebSocket::enablePerMessageDeflate()
     {
@@ -214,6 +218,8 @@ namespace ix
             }
             headers["Sec-WebSocket-Protocol"] = subProtocolsHeader;
         }
+        _ws.setProxyHost(std::ref(_proxyhost));
+        _ws.setProxyPort(_proxyport);
 
         WebSocketInitResult status = _ws.connectToUrl(_url, headers, timeoutSecs);
         if (!status.success)
@@ -611,4 +617,16 @@ namespace ix
         std::lock_guard<std::mutex> lock(_configMutex);
         return _subProtocols;
     }
+    void WebSocket::setProxyHost(std::string& hostname)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _proxyhost = hostname;
+    }
+    void WebSocket::setProxyPort(int port)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _proxyport = port;
+    }
+
+
 } // namespace ix

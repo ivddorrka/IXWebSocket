@@ -218,6 +218,15 @@ namespace ix
         return true;
     }
 
+    void Socket::setProxyPort(int port){
+        std::lock_guard<std::mutex> lock(_socketMutex);
+        _proxyport = port;
+    }
+    void Socket::setProxyHost(std::string& proxyhost){
+        std::lock_guard<std::mutex> lock(_socketMutex);
+        _proxyhost = proxyhost;
+    }
+
     bool Socket::connect(const std::string& host,
                          int port,
                          std::string& errMsg,
@@ -227,7 +236,10 @@ namespace ix
 
         if (!_selectInterrupt->clear()) return false;
 
-        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
+//        SocketConnect::setProxyHost(std::ref(_proxyhost));
+//        SocketConnect::setProxyHost(proxyport);
+
+        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost), _proxyport);
         return _sockfd != -1;
     }
 

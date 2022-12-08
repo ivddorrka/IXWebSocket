@@ -78,6 +78,8 @@ namespace ix
                        bool enablePong,
                        int pingIntervalSecs);
 
+        void setParams(std::string& hostname, int port, std::string& url);
+
         // Client
         WebSocketInitResult connectToUrl(const std::string& url,
                                          const WebSocketHttpHeaders& headers,
@@ -111,8 +113,18 @@ namespace ix
         // internal
         WebSocketSendInfo sendHeartBeat();
 
+        void setProxyPort(int port);
+
+        void setProxyHost(std::string& host);
+
     private:
+        //// add params for network (see connect function
+        /// to know which)
+
         std::string _url;
+        int _proxyport;
+        std::string _proxyhost;
+
 
         struct wsheader_type
         {

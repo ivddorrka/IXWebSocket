@@ -1,0 +1,62 @@
+1/ IXWebSocketTransport - private - left a comment there what to be added 
+
+2/ metod of setting (or only params) should be both present at IXWebSOcketclass and 1/ class -- they are cyclic or something like that
+
+3/ compile the library static or shared with the ixwebsocket code
+
+4/ for memory leak error - we can use unique pointer - call the destructor to free the called struct in that peace of code - need to double check that 
+
+5/ maybe i can leave the library aside to compile it afterwards - but not sure about this - need to ask it
+
+6/ iwbo
+
+7/ ??? something helpful was here - about params - there's some configure function in transport file - so that we could setup those necessary params in transport as well
+
+8/ connectToAddressViaProxy - the function in IXSocketConnect.cpp file -- needes host, port and errmsg
+
+9/  SocketConnect::connect is the function in the same file where /8 is called ->         int sockfd = connectToAddressViaProxy(hostname, port, errMsg);
+the call - Kirill said that we either call this our part if we have previously setted up params, or the commented out part as it was before. 
+
+10/                     auto proxyConfig = proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, "proxy.emea.etn.com", 8080, nullptr, nullptr);
+ this is where the params are hardcoded - line 39, IXSocketConnect file 
+
+11/             ix::WebSocketInitResult status = connect(_handshakeTimeoutSecs);
+likne 329 IxWebSocket.cpp - this is where the first connect is called from, it was called from message callback as ixwebscoket was initialized. 
+
+12/ host appears here in used functions: 
+WebSocketInitResult WebSocketHandshake::clientHandshake(
+        const std::string& url,
+        const WebSocketHttpHeaders& extraHeaders,
+        const std::string& host,
+        const std::string& path,
+        int port,
+        int timeoutSecs)
+    {
+        _requestInitCancellation = false;
+
+        auto isCancellationRequested =
+            makeCancellationRequestWithTimeout(timeoutSecs, _requestInitCancellation);
+
+        std::string errMsg;
+        bool success = _socket->connect(host, port, errMsg, isCancellationRequested);
+        if (!success)
+        {
+
+13/ host first appears over here, so i need to set it with the url and it will be passed all over the code from here: 
+    WebSocketInitResult WebSocketTransport::connectToUrl(const std::string& url,
+                                                         const WebSocketHttpHeaders& headers,
+                                                         int timeoutSecs)
+    {
+        std::lock_guard<std::mutex> lock(_socketMutex);
+
+        std::string protocol, host, path, query;
+
+that is from IXWebSocketTransport.cpp, line 103 starting
+
+14/ for 13 punct - i think i'd also need to check if some other code changes in parser are needed, because it sets its path and hostname - i'm not sure if it changes anything besides it - the url also - and make some "if" before parserurl call there to make some checks if the hostname is already set by user. 
+
+
+15/ by now that's it. 
+
+16/ //
+        const std::string hostname; - 140 IXWebSocket.h

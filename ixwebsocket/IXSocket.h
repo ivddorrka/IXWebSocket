@@ -83,6 +83,10 @@ namespace ix
                                    int sockfd,
                                    const SelectInterruptPtr& selectInterrupt);
 
+        void setProxyPort(int proxyport);
+
+        void setProxyHost(std::string& proxyhost);
+
     protected:
         std::atomic<int> _sockfd;
         std::mutex _socketMutex;
@@ -93,7 +97,8 @@ namespace ix
     private:
         static const int kDefaultPollTimeout;
         static const int kDefaultPollNoTimeout;
-
+        int _proxyport;
+        std::string _proxyhost;
         SelectInterruptPtr _selectInterrupt;
     };
 } // namespace ix

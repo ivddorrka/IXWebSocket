@@ -19,11 +19,18 @@ namespace ix
         static int connect(const std::string& hostname,
                            int port,
                            std::string& errMsg,
-                           const CancellationRequest& isCancellationRequested);
+                           const CancellationRequest& isCancellationRequested, std::string& proxyhost, int proxyport);
 
         static void configure(int sockfd);
+        static void setProxyHost(std::string& proxyhost);
+        static void setProxyPort(int proxyport);
+
 
     private:
+        static int _proxyport;
+        static std::string _proxyhost;
+        static int connectToAddressViaProxy(const std::string& host, int port, std::string& errMsg, std::string& proxyhost, int proxyport);
+
         static int connectToAddress(const struct addrinfo* address,
                                     std::string& errMsg,
                                     const CancellationRequest& isCancellationRequested);

@@ -21,14 +21,14 @@
 int main()
 {
     // Required on Windows
-    ix::initNetSystem();
+    //ix::initNetSystem();
 
     // Our websocket object
     ix::WebSocket webSocket;
 
     // Connect to a server with encryption
     // See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
-    std::string url("wss://echo.websocket.org");
+    std::string url("ws://127.0.0.1:8080");
     webSocket.setUrl(url);
 
     std::cout << ix::userAgent() << std::endl;

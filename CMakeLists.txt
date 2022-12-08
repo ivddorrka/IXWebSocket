@@ -63,6 +63,7 @@ set( IXWEBSOCKET_SOURCES
     ixwebsocket/IXWebSocketProxyServer.cpp
     ixwebsocket/IXWebSocketServer.cpp
     ixwebsocket/IXWebSocketTransport.cpp
+    ixwebsocket/proxysocket.c
 )
 
 set( IXWEBSOCKET_HEADERS
@@ -116,6 +117,7 @@ set( IXWEBSOCKET_HEADERS
     ixwebsocket/IXWebSocketServer.h
     ixwebsocket/IXWebSocketTransport.h
     ixwebsocket/IXWebSocketVersion.h
+    ixwebsocket/proxysocket.h
 )
 
 option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
@@ -314,7 +316,10 @@ if (USE_WS OR USE_TEST)
   endif()
 endif()
 
-if (BUILD_DEMO) 
-  add_executable(demo main.cpp)
-  target_link_libraries(demo ixwebsocket) 
-endif()
+#if (BUILD_DEMO)
+add_executable(demo main.cpp)
+#add_library()
+target_link_libraries(demo ixwebsocket)
+
+#add_library()
+#endif()

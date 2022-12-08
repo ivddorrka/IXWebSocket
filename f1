@@ -1,0 +1,26 @@
+     1	total 2097232
+     2	lrwxrwxrwx   1 root root          7 zář  1 13:29 bin -> usr/bin
+     3	drwxr-xr-x   4 root root       4096 lis 28 19:50 boot
+     4	drwxrwxr-x   2 root root       4096 zář  1 13:30 cdrom
+     5	drwxr-xr-x  19 root root       4100 lis 23 11:13 dev
+     6	drwxr-xr-x 150 root root      12288 lis 28 19:50 etc
+     7	drwxr-xr-x   4 root root       4096 zář 19 15:08 home
+     8	lrwxrwxrwx   1 root root          7 zář  1 13:29 lib -> usr/lib
+     9	lrwxrwxrwx   1 root root          9 zář  1 13:29 lib32 -> usr/lib32
+    10	lrwxrwxrwx   1 root root          9 zář  1 13:29 lib64 -> usr/lib64
+    11	lrwxrwxrwx   1 root root         10 zář  1 13:29 libx32 -> usr/libx32
+    12	drwx------   2 root root      16384 zář  1 13:29 lost+found
+    13	drwxr-xr-x   3 root root       4096 zář 18 17:37 media
+    14	drwxr-xr-x   2 root root       4096 srp 19  2021 mnt
+    15	drwxr-xr-x   4 root root       4096 zář 20 16:31 opt
+    16	dr-xr-xr-x 376 root root          0 lis 23 11:13 proc
+    17	drwx------  10 root root       4096 říj 17 11:29 root
+    18	drwxr-xr-x  32 root root        960 lis 29 10:53 run
+    19	lrwxrwxrwx   1 root root          8 zář  1 13:29 sbin -> usr/sbin
+    20	drwxr-xr-x   8 root root       4096 srp 19  2021 snap
+    21	drwxr-xr-x   2 root root       4096 srp 19  2021 srv
+    22	-rw-------   1 root root 2147483648 zář  1 13:29 swapfile
+    23	dr-xr-xr-x  13 root root          0 lis 23 11:13 sys
+    24	drwxrwxrwt  23 root root       4096 lis 29 11:18 tmp
+    25	drwxr-xr-x  14 root root       4096 srp 19  2021 usr
+    26	drwxr-xr-x  15 root root       4096 zář 13 13:23 var

@@ -106,7 +106,7 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_socketMutex);
 
-        std::string protocol, host, path, query;
+        std::string protocol, path, query, host;
         int port;
         std::string remoteUrl(url);
 
@@ -138,6 +138,8 @@ namespace ix
                                                   _perMessageDeflateOptions,
                                                   _enablePerMessageDeflate);
 
+            webSocketHandshake.setProxyHost(std::ref(_proxyhost));
+            webSocketHandshake.setProxyPort(_proxyport);
             result = webSocketHandshake.clientHandshake(
                 remoteUrl, headers, host, path, port, timeoutSecs);
 
@@ -1193,5 +1195,13 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_closeReasonMutex);
         return _closeReason;
+    }
+    void WebSocketTransport::setProxyPort(int port)
+    {
+        _proxyport = port;
+    }
+    void WebSocketTransport::setProxyHost(std::string& host)
+    {
+        _proxyhost = host;
     }
 } // namespace ix
