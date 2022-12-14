@@ -321,5 +321,9 @@ add_executable(demo main.cpp)
 #add_library()
 target_link_libraries(demo ixwebsocket)
 
+find_package(Boost 1.71.0 COMPONENTS program_options system REQUIRED)
+target_include_directories(demo PRIVATE ${Boost_INCLUDE_DIR})
+target_link_libraries(demo Boost::program_options Boost::system)
+
 #add_library()
 #endif()

@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/types.h>
+#include <memory>
+#include <boost/make_unique.hpp>
 
 // Android needs extra headers for TCP_NODELAY and IPPROTO_TCP
 #ifdef ANDROID
@@ -27,7 +29,7 @@
 namespace ix
 {
 
-        void logger(int level, const char* message, void* userdata)
+        void logger(__attribute__((unused)) int level, const char* message, __attribute__((unused)) void* userdata)
             {
                 std::cerr << "Log from proxysocket: " << message << std::endl;
             }
@@ -194,10 +196,10 @@ namespace ix
         /*int prxPort = proxyport;
         std::string proxyhost = proxyhost;*/
 
-        auto proxyConfig = proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr);
-
-        proxysocketconfig_set_logging(proxyConfig, logger, nullptr);
-        int fd = proxysocket_connect(proxyConfig, host.c_str(), port, &errorMsg);
+        //proxysocketconfig proxyConfig = proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr);
+        auto proxyConfig = boost::make_unique<proxysocketconfig>(proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr));
+        proxysocketconfig_set_logging(*proxyConfig, logger, nullptr);
+        int fd = proxysocket_connect(*proxyConfig, host.c_str(), port, &errorMsg);
 
         if (fd == -1)
         {

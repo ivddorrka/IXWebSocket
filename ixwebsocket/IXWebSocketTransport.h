@@ -78,7 +78,6 @@ namespace ix
                        bool enablePong,
                        int pingIntervalSecs);
 
-        void setParams(std::string& hostname, int port, std::string& url);
 
         // Client
         WebSocketInitResult connectToUrl(const std::string& url,
