@@ -63,7 +63,6 @@ set( IXWEBSOCKET_SOURCES
     ixwebsocket/IXWebSocketProxyServer.cpp
     ixwebsocket/IXWebSocketServer.cpp
     ixwebsocket/IXWebSocketTransport.cpp
-    ixwebsocket/proxysocket.c
 )
 
 set( IXWEBSOCKET_HEADERS
@@ -117,7 +116,6 @@ set( IXWEBSOCKET_HEADERS
     ixwebsocket/IXWebSocketServer.h
     ixwebsocket/IXWebSocketTransport.h
     ixwebsocket/IXWebSocketVersion.h
-    ixwebsocket/proxysocket.h
 )
 
 option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
@@ -320,6 +318,7 @@ endif()
 add_executable(demo main.cpp)
 #add_library()
 target_link_libraries(demo ixwebsocket)
+target_link_libraries(demo libproxysocket.a)
 
 find_package(Boost 1.71.0 COMPONENTS program_options system REQUIRED)
 target_include_directories(demo PRIVATE ${Boost_INCLUDE_DIR})

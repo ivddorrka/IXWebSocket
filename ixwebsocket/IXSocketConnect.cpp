@@ -11,11 +11,11 @@
 #include "IXSelectInterrupt.h"
 #include "IXSocket.h"
 #include "IXUniquePtr.h"
-#include "proxysocket.h"
 #include <fcntl.h>
 #include <string.h>
 #include <sys/types.h>
 #include <memory>
+#include "proxysocket.h"
 #include <boost/make_unique.hpp>
 
 // Android needs extra headers for TCP_NODELAY and IPPROTO_TCP

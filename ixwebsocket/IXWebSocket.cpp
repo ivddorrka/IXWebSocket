@@ -12,9 +12,9 @@
 #include "IXUtf8Validator.h"
 #include "IXWebSocketHandshake.h"
 #include <cassert>
-#include <cmath>
 #include "proxysocket.h"
 
+#include <cmath>
 
 namespace
 {
