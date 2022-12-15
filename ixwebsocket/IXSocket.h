@@ -84,6 +84,7 @@ namespace ix
                                    const SelectInterruptPtr& selectInterrupt);
 
         void setProxyPort(int proxyport);
+        void setProxyConnectionType(int proxytype);
 
         void setProxyHost(std::string& proxyhost);
 
@@ -98,6 +99,7 @@ namespace ix
         static const int kDefaultPollTimeout;
         static const int kDefaultPollNoTimeout;
         int _proxyport;
+        int _proxyConnectionType;
         std::string _proxyhost;
         SelectInterruptPtr _selectInterrupt;
     };

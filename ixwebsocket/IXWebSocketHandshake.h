@@ -38,9 +38,12 @@ namespace ix
         WebSocketInitResult serverHandshake(int timeoutSecs, bool enablePerMessageDeflate);
         void setProxyHost(std::string& proxyhost);
         void setProxyPort(int proxyport);
+        void setProxyConnectionType(int proxyConType);
     private:
         int _proxyport;
         std::string _proxyhost;
+        int _proxyConnectionType;
+
         std::string genRandomString(const int len);
 
         // Parse HTTP headers

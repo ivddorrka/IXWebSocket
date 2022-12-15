@@ -218,7 +218,16 @@ namespace ix
             }
             headers["Sec-WebSocket-Protocol"] = subProtocolsHeader;
         }
-        _ws.setProxyHost(std::ref(_proxyhost));
+        if (!_proxyhost.empty())
+        {
+            _ws.setProxyHost(std::ref(_proxyhost));
+        }
+
+        if (_proxyConnectionType!=-1)
+        {
+            _ws.setProxyConnectionType(_proxyConnectionType); // TO-DO make setter for contype
+        }
+
         _ws.setProxyPort(_proxyport);
 
         WebSocketInitResult status = _ws.connectToUrl(_url, headers, timeoutSecs);
@@ -626,6 +635,17 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_configMutex);
         _proxyport = port;
+    }
+    void WebSocket::setProxyConnType(std::string& type)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+
+        int proxytype = PROXYSOCKET_TYPE_NONE;
+
+        proxytype = proxysocketconfig_get_name_type(type.c_str());
+
+        _proxyConnectionType = proxytype;
+//        #define PROXYSOCKET_TYPE_WEB_CONNECT
     }
 
 

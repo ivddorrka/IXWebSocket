@@ -28,8 +28,23 @@ int main()
 
     // Connect to a server with encryption
     // See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
-    std::string url("ws://127.0.0.1:8080");
+//    std::string url("ws://127.0.0.1:8080");
+    std::string  url("ws://10.130.239.46");
+    // proxy params definitions
+
+    std::string proxytype("PROXYSOCKET_TYPE_WEB_CONNECT");
+    std::string proxyhost("proxy.emea.etn.com");
+    int proxyport = 8080;
+
+    // proxy params definitions - END
+
+
+    webSocket.setProxyHost(std::ref(proxyhost));
+    webSocket.setProxyPort(proxyport);
+    webSocket.setProxyConnType(std::ref(proxytype));
+
     webSocket.setUrl(url);
+
 
     std::cout << ix::userAgent() << std::endl;
     std::cout << "Connecting to " << url << "..." << std::endl;

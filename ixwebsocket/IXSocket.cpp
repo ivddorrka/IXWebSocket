@@ -222,6 +222,12 @@ namespace ix
         std::lock_guard<std::mutex> lock(_socketMutex);
         _proxyport = port;
     }
+
+    void Socket::setProxyConnectionType(int proxytype){
+        std::lock_guard<std::mutex> lock(_socketMutex);
+        _proxyConnectionType = proxytype;
+    }
+
     void Socket::setProxyHost(std::string& proxyhost){
         std::lock_guard<std::mutex> lock(_socketMutex);
         _proxyhost = proxyhost;
@@ -239,7 +245,8 @@ namespace ix
 //        SocketConnect::setProxyHost(std::ref(_proxyhost));
 //        SocketConnect::setProxyHost(proxyport);
 
-        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost), _proxyport);
+        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost), _proxyport, _proxyConnectionType);
+
         return _sockfd != -1;
     }
 

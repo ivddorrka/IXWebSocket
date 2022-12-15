@@ -113,7 +113,7 @@ namespace ix
         WebSocketSendInfo sendHeartBeat();
 
         void setProxyPort(int port);
-
+        void setProxyConnectionType(int proxyConType);
         void setProxyHost(std::string& host);
 
     private:
@@ -122,6 +122,7 @@ namespace ix
 
         std::string _url;
         int _proxyport;
+        int _proxyConnectionType;
         std::string _proxyhost;
 
 

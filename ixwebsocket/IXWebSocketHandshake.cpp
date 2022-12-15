@@ -98,8 +98,12 @@ namespace ix
             makeCancellationRequestWithTimeout(timeoutSecs, _requestInitCancellation);
 
         std::string errMsg;
+
         _socket->setProxyHost(std::ref(_proxyhost));
         _socket->setProxyPort(_proxyport);
+        _socket->setProxyConnectionType(_proxyConnectionType);
+
+
         bool success = _socket->connect(host, port, errMsg, isCancellationRequested);
         if (!success)
         {
@@ -370,6 +374,10 @@ namespace ix
     void WebSocketHandshake::setProxyPort(int proxyport)
     {
         _proxyport = proxyport;
+    }
+    void WebSocketHandshake::setProxyConnectionType(int proxyConType) {
+
+        _proxyConnectionType = proxyConType;
     }
 
 } // namespace ix

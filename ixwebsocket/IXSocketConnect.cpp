@@ -127,10 +127,10 @@ namespace ix
                                int port,
                                std::string& errMsg,
                                const CancellationRequest& isCancellationRequested,
-                               std::string& proxyhost, int proxyport)
+                               std::string& proxyhost, int proxyport, int proxytype)
     {
         int sockfd;
-        if (proxyhost.empty()){
+        if (proxyhost.empty() || proxytype==0){
         //
         // First do DNS resolution
         //
@@ -160,7 +160,7 @@ namespace ix
             freeaddrinfo(res);
         }
         else{
-            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxyhost, proxyport);
+            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxyhost, proxyport, proxytype);
         }
 
         return sockfd;
@@ -189,7 +189,7 @@ namespace ix
     }
     int SocketConnect::connectToAddressViaProxy(const std::string& host,
                                                 int port,
-                                                std::string& errMsg, std::string &proxyhost, int proxyport)
+                                                std::string& errMsg, std::string &proxyhost, int proxyport,  int proxytype)
     {
         char* errorMsg;
 
