@@ -140,6 +140,8 @@ namespace ix
 
             webSocketHandshake.setProxyHost(std::ref(_proxyhost));
             webSocketHandshake.setProxyPort(_proxyport);
+            webSocketHandshake.setProxyUser(std::ref(_proxyuser));
+            webSocketHandshake.setProxyPass(std::ref(_proxypass));
             webSocketHandshake.setProxyConnectionType(_proxyConnectionType);
 
             result = webSocketHandshake.clientHandshake(
@@ -1211,5 +1213,14 @@ namespace ix
     void WebSocketTransport::setProxyHost(std::string& host)
     {
         _proxyhost = host;
+    }
+
+    void WebSocketTransport::setProxyPass(std::string& pass)
+    {
+        _proxypass = pass;
+    }
+    void WebSocketTransport::setProxyUser(std::string& user)
+    {
+        _proxyuser = user;
     }
 } // namespace ix

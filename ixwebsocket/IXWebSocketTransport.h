@@ -115,12 +115,18 @@ namespace ix
         void setProxyPort(int port);
         void setProxyConnectionType(int proxyConType);
         void setProxyHost(std::string& host);
+        void setProxyPass(std::string& pass);
+        void setProxyUser(std::string& user);
+
 
     private:
         //// add params for network (see connect function
         /// to know which)
 
         std::string _url;
+        std::string _proxypass;
+        std::string _proxyuser;
+
         int _proxyport;
         int _proxyConnectionType;
         std::string _proxyhost;

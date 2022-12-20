@@ -25,23 +25,35 @@ int main()
 
     // Our websocket object
     ix::WebSocket webSocket;
-
+    ix::SocketTLSOptions tr;
+    tr.tls = true;
+   webSocket.setTLSOptions(tr);
     // Connect to a server with encryption
     // See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
-//    std::string url("ws://127.0.0.1:8080");
-    std::string  url("ws://10.130.239.46");
+//    std::string url("ws://127.0.0.1");
+//    std::string  url("ws://10.130.239.46");
+    std::string  url("wss://ws.postman-echo.com/raw");
     // proxy params definitions
 
-    std::string proxytype("PROXYSOCKET_TYPE_WEB_CONNECT");
-    std::string proxyhost("proxy.emea.etn.com");
-    int proxyport = 8080;
+//    std::string proxytype("WEB");
+//    std::string proxyhost("proxy.emea.etn.com");
+//    std::string proxyhost("localhost");
+//    int proxyport = 8080;
+
+
+    /*std::string proxyuser;
+    std::string proxypass;
+
+    webSocket.setProxyPass(std::ref(proxypass));
+    webSocket.setProxyUser(std::ref(proxyuser));*/
 
     // proxy params definitions - END
 
 
-    webSocket.setProxyHost(std::ref(proxyhost));
-    webSocket.setProxyPort(proxyport);
-    webSocket.setProxyConnType(std::ref(proxytype));
+
+//    webSocket.setProxyHost(std::ref(proxyhost));
+//    webSocket.setProxyPort(proxyport);
+//    webSocket.setProxyConnType(std::ref(proxytype));
 
     webSocket.setUrl(url);
 

@@ -127,10 +127,10 @@ namespace ix
                                int port,
                                std::string& errMsg,
                                const CancellationRequest& isCancellationRequested,
-                               std::string& proxyhost, int proxyport, int proxytype)
+                               std::string& proxyhost, int proxyport, int proxytype, std::string& proxypass, std::string& proxyuser)
     {
         int sockfd;
-        if (proxyhost.empty() || proxytype==0){
+        if (proxytype==0){
         //
         // First do DNS resolution
         //
@@ -160,7 +160,7 @@ namespace ix
             freeaddrinfo(res);
         }
         else{
-            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxyhost, proxyport, proxytype);
+            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxyhost, proxyport, proxytype, std::ref(proxyuser), std::ref(proxypass));
         }
 
         return sockfd;
@@ -189,15 +189,14 @@ namespace ix
     }
     int SocketConnect::connectToAddressViaProxy(const std::string& host,
                                                 int port,
-                                                std::string& errMsg, std::string &proxyhost, int proxyport,  int proxytype)
+                                                std::string& errMsg, std::string &proxyhost, int proxyport,  int proxytype,
+                                                std::string& proxyuser, std::string& proxypass)
     {
         char* errorMsg;
 
-        /*int prxPort = proxyport;
-        std::string proxyhost = proxyhost;*/
 
         //proxysocketconfig proxyConfig = proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr);
-        auto proxyConfig = boost::make_unique<proxysocketconfig>(proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr));
+        auto proxyConfig = boost::make_unique<proxysocketconfig>(proxysocketconfig_create(proxytype, proxyhost.c_str(),  proxyport, proxyuser.c_str(), proxypass.c_str()));
         proxysocketconfig_set_logging(*proxyConfig, logger, nullptr);
         int fd = proxysocket_connect(*proxyConfig, host.c_str(), port, &errorMsg);
 

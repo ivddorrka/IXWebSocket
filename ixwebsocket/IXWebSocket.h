@@ -48,6 +48,9 @@ namespace ix
 
         void setUrl(const std::string& url);
         void setProxyHost(std::string& hostname);
+        void setProxyUser(std::string& proxyname);
+        void setProxyPass(std::string& proxyname);
+
         void setProxyPort(int port);
         void setProxyConnType(std::string& type);
 
@@ -139,6 +142,8 @@ namespace ix
         std::string _url;
         int _proxyport = 8080;
         std::string _proxyhost;
+        std::string _username;
+        std::string _userpass;
         int _proxyConnectionType = -1;
 
         WebSocketHttpHeaders _extraHeaders;

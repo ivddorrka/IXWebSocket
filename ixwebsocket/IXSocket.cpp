@@ -232,6 +232,14 @@ namespace ix
         std::lock_guard<std::mutex> lock(_socketMutex);
         _proxyhost = proxyhost;
     }
+    void Socket::setProxyPass(std::string& proxypass){
+        std::lock_guard<std::mutex> lock(_socketMutex);
+        _proxypass = proxypass;
+    }
+    void Socket::setProxyUser(std::string& proxyuser){
+        std::lock_guard<std::mutex> lock(_socketMutex);
+        _proxyuser = proxyuser;
+    }
 
     bool Socket::connect(const std::string& host,
                          int port,
@@ -242,10 +250,9 @@ namespace ix
 
         if (!_selectInterrupt->clear()) return false;
 
-//        SocketConnect::setProxyHost(std::ref(_proxyhost));
-//        SocketConnect::setProxyHost(proxyport);
 
-        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost), _proxyport, _proxyConnectionType);
+        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost),
+                                         _proxyport, _proxyConnectionType, std::ref(_proxypass), std::ref(_proxyuser));
 
         return _sockfd != -1;
     }

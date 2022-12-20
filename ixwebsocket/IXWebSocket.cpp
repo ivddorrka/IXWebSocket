@@ -222,6 +222,8 @@ namespace ix
         {
             _ws.setProxyHost(std::ref(_proxyhost));
         }
+        _ws.setProxyUser(_username);
+        _ws.setProxyPass(_userpass);
 
         if (_proxyConnectionType!=-1)
         {
@@ -630,6 +632,16 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_configMutex);
         _proxyhost = hostname;
+    }
+    void WebSocket::setProxyUser(std::string& username)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _username = username;
+    }
+    void WebSocket::setProxyPass(std::string& userpass)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _userpass = userpass;
     }
     void WebSocket::setProxyPort(int port)
     {

@@ -87,6 +87,8 @@ namespace ix
         void setProxyConnectionType(int proxytype);
 
         void setProxyHost(std::string& proxyhost);
+        void setProxyPass(std::string& proxypass);
+        void setProxyUser(std::string& proxyuser);
 
     protected:
         std::atomic<int> _sockfd;
@@ -101,6 +103,8 @@ namespace ix
         int _proxyport;
         int _proxyConnectionType;
         std::string _proxyhost;
+        std::string _proxyuser;
+        std::string _proxypass;
         SelectInterruptPtr _selectInterrupt;
     };
 } // namespace ix

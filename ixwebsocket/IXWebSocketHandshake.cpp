@@ -100,6 +100,8 @@ namespace ix
         std::string errMsg;
 
         _socket->setProxyHost(std::ref(_proxyhost));
+        _socket->setProxyPass(std::ref(_proxypass));
+        _socket->setProxyUser(std::ref(_proxyuser));
         _socket->setProxyPort(_proxyport);
         _socket->setProxyConnectionType(_proxyConnectionType);
 
@@ -369,6 +371,14 @@ namespace ix
     void WebSocketHandshake::setProxyHost(std::string& proxyhost)
     {
         _proxyhost = proxyhost;
+    }
+    void WebSocketHandshake::setProxyPass(std::string& username)
+    {
+        _proxyuser = username;
+    }
+    void WebSocketHandshake::setProxyUser(std::string& proxypass)
+    {
+        _proxypass = proxypass;
     }
 
     void WebSocketHandshake::setProxyPort(int proxyport)

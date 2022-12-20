@@ -119,38 +119,38 @@ set( IXWEBSOCKET_HEADERS
 )
 
 option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
-option(USE_TLS "Enable TLS support" FALSE)
+option(USE_TLS "Enable TLS support" 1)
 
-if (USE_TLS)
+#if (USE_TLS)
     # default to securetranport on Apple if nothing is configured
-    if (APPLE)
-      if (NOT USE_MBED_TLS AND NOT USE_OPEN_SSL) # unless we want something else
-        set(USE_SECURE_TRANSPORT ON)
-      endif()
-    # default to mbedtls on windows if nothing is configured
-    elseif (WIN32)
-      if (NOT USE_OPEN_SSL) # unless we want something else
-        set(USE_MBED_TLS ON)
-      endif()
-    else() # default to OpenSSL on all other platforms
-      if (NOT USE_MBED_TLS) # Unless mbedtls is requested
-        set(USE_OPEN_SSL ON)
-      endif()
-    endif()
+#    if (APPLE)
+#      if (NOT USE_MBED_TLS AND NOT USE_OPEN_SSL) # unless we want something else
+#        set(USE_SECURE_TRANSPORT ON)
+#      endif()
+#    # default to mbedtls on windows if nothing is configured
+#    elseif (WIN32)
+#      if (NOT USE_OPEN_SSL) # unless we want something else
+#        set(USE_MBED_TLS ON)
+#      endif()
+#    else() # default to OpenSSL on all other platforms
+#      if (NOT USE_MBED_TLS) # Unless mbedtls is requested
+set(USE_OPEN_SSL ON)
+#      endif()
+#    endif()
 
-    if (USE_MBED_TLS)
-        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketMbedTLS.h)
-        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketMbedTLS.cpp)
-    elseif (USE_SECURE_TRANSPORT)
-        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketAppleSSL.h)
-        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketAppleSSL.cpp)
-    elseif (USE_OPEN_SSL)
-        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketOpenSSL.h)
-        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketOpenSSL.cpp)
-    else()
-        message(FATAL_ERROR "TLS Configuration error: unknown backend")
-    endif()
-endif()
+#    if (USE_MBED_TLS)
+#        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketMbedTLS.h)
+#        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketMbedTLS.cpp)
+#    elseif (USE_SECURE_TRANSPORT)
+#        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketAppleSSL.h)
+#        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketAppleSSL.cpp)
+#    elseif (USE_OPEN_SSL)
+#        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketOpenSSL.h)
+#        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketOpenSSL.cpp)
+#    else()
+#        message(FATAL_ERROR "TLS Configuration error: unknown backend")
+#    endif()
+#endif()
 
 if(BUILD_SHARED_LIBS)
     # Building shared library
@@ -176,61 +176,61 @@ else()
     )
 endif()
 
-if (USE_TLS)
-    target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_TLS)
-    if (USE_MBED_TLS)
-        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_MBED_TLS)
-    elseif (USE_OPEN_SSL)
-        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_OPEN_SSL)
-    elseif (USE_SECURE_TRANSPORT)
-        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_SECURE_TRANSPORT)
-    else()
-        message(FATAL_ERROR "TLS Configuration error: unknown backend")
-    endif()
-endif()
+#if (USE_TLS)
+#    target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_TLS)
+#    if (USE_MBED_TLS)
+#        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_MBED_TLS)
+#    elseif (USE_OPEN_SSL)
+target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_OPEN_SSL)
+#    elseif (USE_SECURE_TRANSPORT)
+#        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_SECURE_TRANSPORT)
+#    else()
+#        message(FATAL_ERROR "TLS Configuration error: unknown backend")
+#    endif()
+#endif()
 
-if (USE_TLS)
-  if (USE_OPEN_SSL)
-    message(STATUS "TLS configured to use openssl")
+#if (USE_TLS)
+#  if (USE_OPEN_SSL)
+message(STATUS "TLS configured to use openssl")
 
     # Help finding Homebrew's OpenSSL on macOS
-    if (APPLE)
-      set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/local/opt/openssl/lib)
-      set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} /usr/local/opt/openssl/include)
-
-      # This is for MacPort OpenSSL 1.0
-      # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/local/lib/openssl-1.0)
-      # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} /opt/local/include/openssl-1.0)
-    endif()
+#    if (APPLE)
+#      set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/local/opt/openssl/lib)
+#      set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} /usr/local/opt/openssl/include)
+#
+#      # This is for MacPort OpenSSL 1.0
+#      # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/local/lib/openssl-1.0)
+#      # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} /opt/local/include/openssl-1.0)
+#    endif()
 
     # This OPENSSL_FOUND check is to help find a cmake manually configured OpenSSL
-    if (NOT OPENSSL_FOUND)
-      find_package(OpenSSL REQUIRED)
-    endif()
-    message(STATUS "OpenSSL: " ${OPENSSL_VERSION})
+#    if (NOT OPENSSL_FOUND)
+find_package(OpenSSL REQUIRED)
+#    endif()
+message(STATUS "OpenSSL: " ${OPENSSL_VERSION})
 
-    add_definitions(${OPENSSL_DEFINITIONS})
-    target_include_directories(ixwebsocket PUBLIC $<BUILD_INTERFACE:${OPENSSL_INCLUDE_DIR}>)
-    target_link_libraries(ixwebsocket PRIVATE ${OPENSSL_LIBRARIES})
-  elseif (USE_MBED_TLS)
-    message(STATUS "TLS configured to use mbedtls")
-
-    # This MBEDTLS_FOUND check is to help find a cmake manually configured MbedTLS
-    if (NOT MBEDTLS_FOUND)
-      find_package(MbedTLS REQUIRED)
-      
-      if (MBEDTLS_VERSION_GREATER_THAN_3)
-        target_compile_definitions(ixwebsocket PRIVATE IXWEBSOCKET_USE_MBED_TLS_MIN_VERSION_3)
-      endif()
-      
-    endif()
-    target_include_directories(ixwebsocket PUBLIC $<BUILD_INTERFACE:${MBEDTLS_INCLUDE_DIRS}>)
-    target_link_libraries(ixwebsocket PRIVATE ${MBEDTLS_LIBRARIES})
-  elseif (USE_SECURE_TRANSPORT)
-    message(STATUS "TLS configured to use secure transport")
-    target_link_libraries(ixwebsocket PRIVATE "-framework Foundation" "-framework Security")
-  endif()
-endif()
+add_definitions(${OPENSSL_DEFINITIONS})
+target_include_directories(ixwebsocket PUBLIC $<BUILD_INTERFACE:${OPENSSL_INCLUDE_DIR}>)
+target_link_libraries(ixwebsocket PRIVATE ${OPENSSL_LIBRARIES})
+#  elseif (USE_MBED_TLS)
+#    message(STATUS "TLS configured to use mbedtls")
+#
+#    # This MBEDTLS_FOUND check is to help find a cmake manually configured MbedTLS
+#    if (NOT MBEDTLS_FOUND)
+#      find_package(MbedTLS REQUIRED)
+#
+#      if (MBEDTLS_VERSION_GREATER_THAN_3)
+#        target_compile_definitions(ixwebsocket PRIVATE IXWEBSOCKET_USE_MBED_TLS_MIN_VERSION_3)
+#      endif()
+#
+#    endif()
+#    target_include_directories(ixwebsocket PUBLIC $<BUILD_INTERFACE:${MBEDTLS_INCLUDE_DIRS}>)
+#    target_link_libraries(ixwebsocket PRIVATE ${MBEDTLS_LIBRARIES})
+#  elseif (USE_SECURE_TRANSPORT)
+#    message(STATUS "TLS configured to use secure transport")
+#    target_link_libraries(ixwebsocket PRIVATE "-framework Foundation" "-framework Security")
+#  endif()
+#endif()
 
 option(USE_ZLIB "Enable zlib support" TRUE)
 

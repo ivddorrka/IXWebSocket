@@ -37,11 +37,16 @@ namespace ix
 
         WebSocketInitResult serverHandshake(int timeoutSecs, bool enablePerMessageDeflate);
         void setProxyHost(std::string& proxyhost);
+        void setProxyPass(std::string& proxypass);
+        void setProxyUser(std::string& username);
+
         void setProxyPort(int proxyport);
         void setProxyConnectionType(int proxyConType);
     private:
         int _proxyport;
         std::string _proxyhost;
+        std::string _proxypass;
+        std::string _proxyuser;
         int _proxyConnectionType;
 
         std::string genRandomString(const int len);
