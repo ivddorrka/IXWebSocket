@@ -99,11 +99,8 @@ namespace ix
 
         std::string errMsg;
 
-        _socket->setProxyHost(std::ref(_proxyhost));
-        _socket->setProxyPass(std::ref(_proxypass));
-        _socket->setProxyUser(std::ref(_proxyuser));
-        _socket->setProxyPort(_proxyport);
-        _socket->setProxyConnectionType(_proxyConnectionType);
+        _socket->setProxySettings(std::ref(_proxy_setup));
+
 
 
         bool success = _socket->connect(host, port, errMsg, isCancellationRequested);
@@ -368,26 +365,9 @@ namespace ix
 
         return WebSocketInitResult(true, 200, "", headers, uri);
     }
-    void WebSocketHandshake::setProxyHost(std::string& proxyhost)
+    void WebSocketHandshake::setProxySettings(ProxySetup &proxy_setup)
     {
-        _proxyhost = proxyhost;
-    }
-    void WebSocketHandshake::setProxyPass(std::string& username)
-    {
-        _proxyuser = username;
-    }
-    void WebSocketHandshake::setProxyUser(std::string& proxypass)
-    {
-        _proxypass = proxypass;
-    }
-
-    void WebSocketHandshake::setProxyPort(int proxyport)
-    {
-        _proxyport = proxyport;
-    }
-    void WebSocketHandshake::setProxyConnectionType(int proxyConType) {
-
-        _proxyConnectionType = proxyConType;
+        _proxy_setup = proxy_setup;
     }
 
 } // namespace ix

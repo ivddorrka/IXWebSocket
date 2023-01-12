@@ -11,3 +11,4 @@ a.out
 .idea/
 .vscode/
 brieflymore
+cmake-build-debug/

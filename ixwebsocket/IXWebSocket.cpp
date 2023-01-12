@@ -97,7 +97,7 @@ namespace ix
         _socketTLSOptions = socketTLSOptions;
     }
 
-    const WebSocketPerMessageDeflateOptions WebSocket::getPerMessageDeflateOptions() const
+    WebSocketPerMessageDeflateOptions WebSocket::getPerMessageDeflateOptions() const
     {
         std::lock_guard<std::mutex> lock(_configMutex);
         return _perMessageDeflateOptions;
@@ -218,19 +218,8 @@ namespace ix
             }
             headers["Sec-WebSocket-Protocol"] = subProtocolsHeader;
         }
-        if (!_proxyhost.empty())
-        {
-            _ws.setProxyHost(std::ref(_proxyhost));
-        }
-        _ws.setProxyUser(_username);
-        _ws.setProxyPass(_userpass);
 
-        if (_proxyConnectionType!=-1)
-        {
-            _ws.setProxyConnectionType(_proxyConnectionType); // TO-DO make setter for contype
-        }
-
-        _ws.setProxyPort(_proxyport);
+        _ws.setProxySettings(_proxy_setup);
 
         WebSocketInitResult status = _ws.connectToUrl(_url, headers, timeoutSecs);
         if (!status.success)
@@ -628,36 +617,10 @@ namespace ix
         std::lock_guard<std::mutex> lock(_configMutex);
         return _subProtocols;
     }
-    void WebSocket::setProxyHost(std::string& hostname)
+    void WebSocket::setProxySettings(ProxySetup &proxy_setup)
     {
         std::lock_guard<std::mutex> lock(_configMutex);
-        _proxyhost = hostname;
-    }
-    void WebSocket::setProxyUser(std::string& username)
-    {
-        std::lock_guard<std::mutex> lock(_configMutex);
-        _username = username;
-    }
-    void WebSocket::setProxyPass(std::string& userpass)
-    {
-        std::lock_guard<std::mutex> lock(_configMutex);
-        _userpass = userpass;
-    }
-    void WebSocket::setProxyPort(int port)
-    {
-        std::lock_guard<std::mutex> lock(_configMutex);
-        _proxyport = port;
-    }
-    void WebSocket::setProxyConnType(std::string& type)
-    {
-        std::lock_guard<std::mutex> lock(_configMutex);
-
-        int proxytype = PROXYSOCKET_TYPE_NONE;
-
-        proxytype = proxysocketconfig_get_name_type(type.c_str());
-
-        _proxyConnectionType = proxytype;
-//        #define PROXYSOCKET_TYPE_WEB_CONNECT
+        _proxy_setup = proxy_setup;
     }
 
 

@@ -16,6 +16,7 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
+#include <ixwebsocket/proxysocteksetting.h>
 #include <iostream>
 
 int main()
@@ -33,28 +34,20 @@ int main()
 //    std::string url("ws://127.0.0.1");
 //    std::string  url("ws://10.130.239.46");
     std::string  url("wss://ws.postman-echo.com/raw");
-    // proxy params definitions
 
-//    std::string proxytype("WEB");
-//    std::string proxyhost("proxy.emea.etn.com");
+    ProxySetup setup_params;
+    ProxyPortE proxy_choice = ProxyPortE::proxyport_8080;
+
+
+    std::string proxytype("WEB");
+    std::string proxyhost("proxy.emea.etn.com");
 //    std::string proxyhost("localhost");
-//    int proxyport = 8080;
 
+    setup_params.setProxyHost(proxyhost);
+    setup_params.setProxyPort(proxy_choice);
+    setup_params.setProxyType(proxytype);
 
-    /*std::string proxyuser;
-    std::string proxypass;
-
-    webSocket.setProxyPass(std::ref(proxypass));
-    webSocket.setProxyUser(std::ref(proxyuser));*/
-
-    // proxy params definitions - END
-
-
-
-//    webSocket.setProxyHost(std::ref(proxyhost));
-//    webSocket.setProxyPort(proxyport);
-//    webSocket.setProxyConnType(std::ref(proxytype));
-
+    webSocket.setProxySettings(std::ref(setup_params));
     webSocket.setUrl(url);
 
 

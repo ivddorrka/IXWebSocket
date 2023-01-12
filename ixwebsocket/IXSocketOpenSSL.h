@@ -22,15 +22,17 @@ namespace ix
     class SocketOpenSSL final : public Socket
     {
     public:
-        SocketOpenSSL(const SocketTLSOptions& tlsOptions, int fd = -1);
+        explicit SocketOpenSSL(const SocketTLSOptions& tlsOptions, int fd = -1);
         ~SocketOpenSSL();
+
 
         virtual bool accept(std::string& errMsg) final;
 
         virtual bool connect(const std::string& host,
                              int port,
                              std::string& errMsg,
-                             const CancellationRequest& isCancellationRequested) final;
+                             const CancellationRequest& isCancellationRequested);
+
         virtual void close() final;
 
         virtual ssize_t send(char* buffer, size_t length) final;
@@ -44,7 +46,7 @@ namespace ix
         bool openSSLClientHandshake(const std::string& hostname,
                                     std::string& errMsg,
                                     const CancellationRequest& isCancellationRequested);
-        bool openSSLCheckServerCert(SSL* ssl, const std::string& hostname, std::string& errMsg);
+        static bool openSSLCheckServerCert(SSL* ssl, const std::string& hostname, std::string& errMsg);
         bool checkHost(const std::string& host, const char* pattern);
         bool handleTLSOptions(std::string& errMsg);
         bool openSSLServerHandshake(std::string& errMsg);

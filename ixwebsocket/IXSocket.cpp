@@ -218,27 +218,9 @@ namespace ix
         return true;
     }
 
-    void Socket::setProxyPort(int port){
+    void Socket::setProxySettings(ProxySetup &proxy_setup){
         std::lock_guard<std::mutex> lock(_socketMutex);
-        _proxyport = port;
-    }
-
-    void Socket::setProxyConnectionType(int proxytype){
-        std::lock_guard<std::mutex> lock(_socketMutex);
-        _proxyConnectionType = proxytype;
-    }
-
-    void Socket::setProxyHost(std::string& proxyhost){
-        std::lock_guard<std::mutex> lock(_socketMutex);
-        _proxyhost = proxyhost;
-    }
-    void Socket::setProxyPass(std::string& proxypass){
-        std::lock_guard<std::mutex> lock(_socketMutex);
-        _proxypass = proxypass;
-    }
-    void Socket::setProxyUser(std::string& proxyuser){
-        std::lock_guard<std::mutex> lock(_socketMutex);
-        _proxyuser = proxyuser;
+        _proxy_setup = proxy_setup;
     }
 
     bool Socket::connect(const std::string& host,
@@ -251,8 +233,7 @@ namespace ix
         if (!_selectInterrupt->clear()) return false;
 
 
-        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxyhost),
-                                         _proxyport, _proxyConnectionType, std::ref(_proxypass), std::ref(_proxyuser));
+        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, std::ref(_proxy_setup));
 
         return _sockfd != -1;
     }

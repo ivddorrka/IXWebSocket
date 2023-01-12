@@ -47,13 +47,7 @@ namespace ix
         ~WebSocket();
 
         void setUrl(const std::string& url);
-        void setProxyHost(std::string& hostname);
-        void setProxyUser(std::string& proxyname);
-        void setProxyPass(std::string& proxyname);
-
-        void setProxyPort(int port);
-        void setProxyConnType(std::string& type);
-
+        void setProxySettings(ProxySetup &proxy_setup);
 
         // send extra headers in client handshake request
         void setExtraHeaders(const WebSocketHttpHeaders& headers);
@@ -109,7 +103,7 @@ namespace ix
         static std::string readyStateToString(ReadyState readyState);
 
         const std::string getUrl() const;
-        const WebSocketPerMessageDeflateOptions getPerMessageDeflateOptions() const;
+        WebSocketPerMessageDeflateOptions getPerMessageDeflateOptions() const;
         int getPingInterval() const;
         size_t bufferedAmount() const;
 
@@ -140,11 +134,8 @@ namespace ix
         WebSocketTransport _ws;
 
         std::string _url;
-        int _proxyport = 8080;
-        std::string _proxyhost;
-        std::string _username;
-        std::string _userpass;
-        int _proxyConnectionType = -1;
+        ProxySetup _proxy_setup;
+
 
         WebSocketHttpHeaders _extraHeaders;
 

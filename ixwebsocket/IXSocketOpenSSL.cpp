@@ -722,7 +722,7 @@ namespace ix
                 return false;
             }
 
-            _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
+            _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested, _proxy_setup);
             if (_sockfd == -1) return false;
 
             _ssl_context = openSSLCreateContext(errMsg);
@@ -844,6 +844,13 @@ namespace ix
         }
     }
 
+//    bool SocketOpenSSL::connect(const std::string& host,
+//                                int port,
+//                                std::string& errMsg,
+//                                const CancellationRequest& isCancellationRequested)
+//    {
+//        return Socket::connect(host, port, errMsg, isCancellationRequested);
+//    }
 } // namespace ix
 
 #endif // IXWEBSOCKET_USE_OPEN_SSL

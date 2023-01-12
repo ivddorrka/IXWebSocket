@@ -112,11 +112,7 @@ namespace ix
         // internal
         WebSocketSendInfo sendHeartBeat();
 
-        void setProxyPort(int port);
-        void setProxyConnectionType(int proxyConType);
-        void setProxyHost(std::string& host);
-        void setProxyPass(std::string& pass);
-        void setProxyUser(std::string& user);
+        void setProxySettings(ProxySetup &proxy_setup);
 
 
     private:
@@ -124,13 +120,7 @@ namespace ix
         /// to know which)
 
         std::string _url;
-        std::string _proxypass;
-        std::string _proxyuser;
-
-        int _proxyport;
-        int _proxyConnectionType;
-        std::string _proxyhost;
-
+        ProxySetup _proxy_setup;
 
         struct wsheader_type
         {

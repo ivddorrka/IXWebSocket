@@ -138,11 +138,7 @@ namespace ix
                                                   _perMessageDeflateOptions,
                                                   _enablePerMessageDeflate);
 
-            webSocketHandshake.setProxyHost(std::ref(_proxyhost));
-            webSocketHandshake.setProxyPort(_proxyport);
-            webSocketHandshake.setProxyUser(std::ref(_proxyuser));
-            webSocketHandshake.setProxyPass(std::ref(_proxypass));
-            webSocketHandshake.setProxyConnectionType(_proxyConnectionType);
+            webSocketHandshake.setProxySettings(std::ref(_proxy_setup));
 
             result = webSocketHandshake.clientHandshake(
                 remoteUrl, headers, host, path, port, timeoutSecs);
@@ -1200,27 +1196,9 @@ namespace ix
         std::lock_guard<std::mutex> lock(_closeReasonMutex);
         return _closeReason;
     }
-    void WebSocketTransport::setProxyPort(int port)
+    void WebSocketTransport::setProxySettings(ProxySetup &proxy_setup)
     {
-        _proxyport = port;
+        _proxy_setup = proxy_setup;
     }
 
-    void WebSocketTransport::setProxyConnectionType(int proxyConType){
-
-        _proxyConnectionType = proxyConType;
-
-    }
-    void WebSocketTransport::setProxyHost(std::string& host)
-    {
-        _proxyhost = host;
-    }
-
-    void WebSocketTransport::setProxyPass(std::string& pass)
-    {
-        _proxypass = pass;
-    }
-    void WebSocketTransport::setProxyUser(std::string& user)
-    {
-        _proxyuser = user;
-    }
 } // namespace ix

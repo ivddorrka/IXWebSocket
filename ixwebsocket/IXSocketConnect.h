@@ -7,6 +7,10 @@
 #pragma once
 
 #include "IXCancellationRequest.h"
+#ifndef proxysocteksettings_h
+    #include "proxysocteksetting.h"
+#endif
+
 #include <string>
 
 struct addrinfo;
@@ -19,17 +23,15 @@ namespace ix
         static int connect(const std::string& hostname,
                            int port,
                            std::string& errMsg,
-                           const CancellationRequest& isCancellationRequested, std::string& proxyhost, int proxyport, int proxytype, std::string& proxypass, std::string& proxyuser);
+                           const CancellationRequest& isCancellationRequested, const ProxySetup &proxy_settings);
 
         static void configure(int sockfd);
-        void setProxyHost(std::string& proxyhost);
-        void setProxyPort(int proxyport);
 
 
     private:
-        int _proxyport;
-        std::string _proxyhost;
-        static int connectToAddressViaProxy(const std::string& host, int port, std::string& errMsg, std::string& proxyhost, int proxyport, int proxytype, std::string& proxyuser, std::string& proxypass);
+        static int connectToAddressViaProxy(const std::string& host,
+                                            int port,
+                                            std::string& errMsg, const ProxySetup &proxy_settings);
 
         static int connectToAddress(const struct addrinfo* address,
                                     std::string& errMsg,

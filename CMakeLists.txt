@@ -63,6 +63,7 @@ set( IXWEBSOCKET_SOURCES
     ixwebsocket/IXWebSocketProxyServer.cpp
     ixwebsocket/IXWebSocketServer.cpp
     ixwebsocket/IXWebSocketTransport.cpp
+    ixwebsocket/proxysocteksetting.cpp
 )
 
 set( IXWEBSOCKET_HEADERS
@@ -116,6 +117,7 @@ set( IXWEBSOCKET_HEADERS
     ixwebsocket/IXWebSocketServer.h
     ixwebsocket/IXWebSocketTransport.h
     ixwebsocket/IXWebSocketVersion.h
+    ixwebsocket/proxysocteksetting.h
 )
 
 option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
@@ -145,8 +147,8 @@ set(USE_OPEN_SSL ON)
 #        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketAppleSSL.h)
 #        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketAppleSSL.cpp)
 #    elseif (USE_OPEN_SSL)
-#        list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketOpenSSL.h)
-#        list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketOpenSSL.cpp)
+list( APPEND IXWEBSOCKET_HEADERS ixwebsocket/IXSocketOpenSSL.h)
+list( APPEND IXWEBSOCKET_SOURCES ixwebsocket/IXSocketOpenSSL.cpp)
 #    else()
 #        message(FATAL_ERROR "TLS Configuration error: unknown backend")
 #    endif()
@@ -177,11 +179,16 @@ else()
 endif()
 
 #if (USE_TLS)
-#    target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_TLS)
+target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_TLS)
 #    if (USE_MBED_TLS)
 #        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_MBED_TLS)
 #    elseif (USE_OPEN_SSL)
 target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_OPEN_SSL)
+add_compile_definitions(IXWEBSOCKET_USE_TLS)
+add_compile_definitions(IXWEBSOCKET_USE_OPEN_SSL)
+add_definitions(-DIXWEBSOCKET_USE_OPEN_SSL=1)
+#add_compile_options(-DUSE_TLS=1 )
+
 #    elseif (USE_SECURE_TRANSPORT)
 #        target_compile_definitions(ixwebsocket PUBLIC IXWEBSOCKET_USE_SECURE_TRANSPORT)
 #    else()
@@ -315,6 +322,10 @@ if (USE_WS OR USE_TEST)
 endif()
 
 #if (BUILD_DEMO)
+#add_compile_options(-Wall)
+message("OOOOOOOOOOOOOOOOOOOOOOOOOO ${IXWEBSOCKET_USE_TLS}")
+message("OOOOOOOOOOOOOOOOOOOOOOOOOO ${IXWEBSOCKET_USE_OPEN_SSL}")
+
 add_executable(demo main.cpp)
 #add_library()
 target_link_libraries(demo ixwebsocket)
@@ -323,6 +334,7 @@ target_link_libraries(demo libproxysocket.a)
 find_package(Boost 1.71.0 COMPONENTS program_options system REQUIRED)
 target_include_directories(demo PRIVATE ${Boost_INCLUDE_DIR})
 target_link_libraries(demo Boost::program_options Boost::system)
+add_compile_options(-USE_TLS=1 )
 
 #add_library()
 #endif()

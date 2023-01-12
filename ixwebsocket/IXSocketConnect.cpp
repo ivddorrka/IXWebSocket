@@ -126,11 +126,10 @@ namespace ix
     int SocketConnect::connect(const std::string& hostname,
                                int port,
                                std::string& errMsg,
-                               const CancellationRequest& isCancellationRequested,
-                               std::string& proxyhost, int proxyport, int proxytype, std::string& proxypass, std::string& proxyuser)
+                               const CancellationRequest& isCancellationRequested, const ProxySetup &proxy_settings)
     {
         int sockfd;
-        if (proxytype==0){
+        if (proxy_settings.get_proxy_type()==0){
         //
         // First do DNS resolution
         //
@@ -160,7 +159,7 @@ namespace ix
             freeaddrinfo(res);
         }
         else{
-            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxyhost, proxyport, proxytype, std::ref(proxyuser), std::ref(proxypass));
+            sockfd = connectToAddressViaProxy(hostname, port, errMsg, proxy_settings);
         }
 
         return sockfd;
@@ -189,14 +188,15 @@ namespace ix
     }
     int SocketConnect::connectToAddressViaProxy(const std::string& host,
                                                 int port,
-                                                std::string& errMsg, std::string &proxyhost, int proxyport,  int proxytype,
-                                                std::string& proxyuser, std::string& proxypass)
+                                                std::string& errMsg, const ProxySetup &proxy_settings)
     {
         char* errorMsg;
 
 
         //proxysocketconfig proxyConfig = proxysocketconfig_create(PROXYSOCKET_TYPE_WEB_CONNECT, proxyhost.c_str(),  proxyport, nullptr, nullptr);
-        auto proxyConfig = boost::make_unique<proxysocketconfig>(proxysocketconfig_create(proxytype, proxyhost.c_str(),  proxyport, proxyuser.c_str(), proxypass.c_str()));
+        auto proxyConfig = boost::make_unique<proxysocketconfig>(proxysocketconfig_create(proxy_settings.get_proxy_type(), proxy_settings.get_proxy_host().c_str(),
+                                                                                          proxy_settings.get_proxy_port(), proxy_settings.get_proxy_user().c_str(),
+                                                                                          proxy_settings.get_proxy_pass().c_str()));
         proxysocketconfig_set_logging(*proxyConfig, logger, nullptr);
         int fd = proxysocket_connect(*proxyConfig, host.c_str(), port, &errorMsg);
 
@@ -209,17 +209,6 @@ namespace ix
         SocketConnect::configure(fd);
 
         return fd;
-    }
-
-    void SocketConnect::setProxyHost(std::string& proxyhost)
-    {
-        _proxyhost = proxyhost;
-
-    }
-
-    void SocketConnect::setProxyPort(int proxyport)
-    {
-        _proxyport = proxyport;
     }
 
 } // namespace ix
